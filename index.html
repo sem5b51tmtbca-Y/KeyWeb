@@ -125,37 +125,63 @@
 <script>
 function generateKey() {
 
-    const machineId = document.getElementById("TxtMachinID").value;
-    const days = document.getElementById("NoofDay").value;
+    const machineIdFull = document.getElementById("TxtMachinID").value.trim();
+    const days = document.getElementById("NoofDay").value.trim();
 
-    if (!machineId || !days) {
+    if (!machineIdFull || !days) {
         alert("Please enter Machine ID and Days");
         return;
     }
 
-    let modeCode = "";
-    let prefix = "";
+    // MODE
+    let modeCode = "X";
 
-    if (document.getElementById("RbSawing").checked) {
-        modeCode = "S";
-        prefix = "ALSU";
-    }
-    else if (document.getElementById("RbShape").checked) {
-        modeCode = "H";
-        prefix = "ASCU";
-    }
-    else if (document.getElementById("RbMulti").checked) {
-        modeCode = "M";
-        prefix = "ALSU";
-    }
-    else if (document.getElementById("Rb4P").checked) {
-        modeCode = "P";
-        prefix = "A4SU";
+    if (RbSawing.checked) modeCode = "S";
+    else if (RbShape.checked) modeCode = "H";
+    else if (RbMulti.checked) modeCode = "M";
+    else if (Rb4P.checked) modeCode = "P";
+
+    // SAME slicing as C#
+    const thirdDigit = machineIdFull.substring(2, 3);
+    const lastFourDigits = machineIdFull.substring(machineIdFull.length - 4);
+    const machineID = thirdDigit + lastFourDigits;
+
+    // Current date (same format)
+    const today = new Date().toISOString().split("T")[0];
+
+    // Combine EXACTLY like C#
+    const combined = `${machineID}|${days}|${today}|${modeCode}`;
+
+    // Encode
+    const encoded = base32Encode(new TextEncoder().encode(combined));
+
+    document.getElementById("TxtKey").value = encoded;
+}
+
+/* ===== BASE32 (SAME AS C#) ===== */
+function base32Encode(bytes) {
+    const base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    let result = "";
+    let bitIndex = 0;
+    let currentByte = 0;
+
+    for (let i = 0; i < bytes.length; i++) {
+        currentByte = (currentByte << 8) | bytes[i];
+        bitIndex += 8;
+
+        while (bitIndex >= 5) {
+            bitIndex -= 5;
+            const index = (currentByte >> bitIndex) & 0x1F;
+            result += base32Chars[index];
+        }
     }
 
-    // TEMP OUTPUT (same flow as your WinForms app)
-    document.getElementById("TxtKey").value =
-        prefix + "-" + machineId.substring(0, 6) + "-" + days + "-" + modeCode;
+    if (bitIndex > 0) {
+        const index = (currentByte << (5 - bitIndex)) & 0x1F;
+        result += base32Chars[index];
+    }
+
+    return result;
 }
 </script>
 
