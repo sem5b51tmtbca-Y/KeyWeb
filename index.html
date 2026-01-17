@@ -1,73 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Key Generator</title>
-</head>
-<style>
-    body {
-        font-family: Arial;
-        background: #f2f2f2;
-        padding: 20px;
-    }
 
-    .panel {
-        background: white;
-        max-width: 400px;
-        margin: auto;
-        padding: 15px;
-        border-radius: 6px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.15);
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+        }
 
-    .radio-group {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 15px;
-    }
+        .panel {
+            background: white;
+            max-width: 480px;
+            margin: auto;
+            padding: 18px;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
 
-    .row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            white-space: nowrap;
+            margin-bottom: 25px;
+        }
 
-    label {
-        width: 90px;
-        font-weight: bold;
-    }
+        .radio-group label {
+            font-weight: normal;
+        }
 
-    input[type="text"],
-    input[type="number"] {
-        flex: 1;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-top: 15px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        cursor: pointer;
-    }
+        label {
+            width: 95px;
+            font-weight: bold;
+        }
 
-    button:hover {
-        background: #0056b3;
-    }
-</style>
+        input[type="text"],
+        input[type="number"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="panel">
 
-    <!-- Radio Buttons -->
+    <!-- MODE RADIO BUTTONS -->
     <div class="radio-group">
         <label>
             <input type="radio" name="mode" id="RbSawing" checked>
@@ -78,27 +85,37 @@
             <input type="radio" name="mode" id="RbShape">
             Shape
         </label>
+
+        <label>
+            <input type="radio" name="mode" id="RbMulti">
+            Multi
+        </label>
+
+        <label>
+            <input type="radio" name="mode" id="Rb4P">
+            4P
+        </label>
     </div>
 
-    <!-- Machine ID -->
+    <!-- MACHINE ID -->
     <div class="row">
         <label>MachineID:</label>
         <input type="text" id="TxtMachinID">
     </div>
 
-    <!-- Days -->
+    <!-- DAYS -->
     <div class="row">
         <label>Days:</label>
         <input type="number" id="NoofDay">
     </div>
 
-    <!-- Key -->
+    <!-- KEY -->
     <div class="row">
         <label>Key:</label>
         <input type="text" id="TxtKey">
     </div>
 
-    <!-- Button -->
+    <!-- GENERATE BUTTON -->
     <button id="BtnKeyGen" onclick="generateKey()">
         Key Generate
     </button>
@@ -107,21 +124,38 @@
 
 <script>
 function generateKey() {
+
     const machineId = document.getElementById("TxtMachinID").value;
     const days = document.getElementById("NoofDay").value;
-    const isSawing = document.getElementById("RbSawing").checked;
-    const isShape = document.getElementById("RbShape").checked;
 
     if (!machineId || !days) {
         alert("Please enter Machine ID and Days");
         return;
     }
 
-    let prefix = isSawing ? "ALSU" : "ASCU";
+    let modeCode = "";
+    let prefix = "";
 
-    // Temporary output (we will plug full logic next)
+    if (document.getElementById("RbSawing").checked) {
+        modeCode = "S";
+        prefix = "ALSU";
+    }
+    else if (document.getElementById("RbShape").checked) {
+        modeCode = "H";
+        prefix = "ASCU";
+    }
+    else if (document.getElementById("RbMulti").checked) {
+        modeCode = "M";
+        prefix = "ALSU";
+    }
+    else if (document.getElementById("Rb4P").checked) {
+        modeCode = "P";
+        prefix = "A4SU";
+    }
+
+    // TEMP OUTPUT (same flow as your WinForms app)
     document.getElementById("TxtKey").value =
-        prefix + "-" + machineId + "-" + days;
+        prefix + "-" + machineId.substring(0, 6) + "-" + days + "-" + modeCode;
 }
 </script>
 
