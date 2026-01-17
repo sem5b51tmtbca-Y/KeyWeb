@@ -6,93 +6,175 @@
     <title>Key Generator</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
-            padding: 20px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 20px;
+    }
 
-        .panel {
-            background: white;
-            max-width: 480px;
-            margin: auto;
-            padding: 18px;
-            border-radius: 6px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.15);
-        }
+    .panel {
+        background: white;
+        max-width: 480px;
+        margin: auto;
+        padding: 18px;
+        border-radius: 6px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
 
-        .radio-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            white-space: nowrap;
-            margin-bottom: 25px;
-        }
+  
 
-        .radio-group label {
-            font-weight: normal;
-        }
+    .row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-        .row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    label {
+        width: 95px;
+        font-weight: bold;
+    }
 
-        label {
-            width: 95px;
-            font-weight: bold;
-        }
+    /* === FIXED INPUT STYLING === */
+    input[type="text"],
+    input[type="number"],
+    input[type="password"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* makes all inputs same width */
+    }
 
-        input[type="text"],
-        input[type="number"] {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+  
 
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 15px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    button:hover {
+        background: #0056b3;
+    }
 
-        button:hover {
-            background: #0056b3;
-        }
-    </style>
+      /* === CUSTOM RADIO BUTTONS === */
+    .radio-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        flex-wrap: wrap; /* in case screen is small */
+    }
+
+    .custom-radio {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        font-weight: normal;
+        user-select: none;
+    }
+
+    .custom-radio input {
+        position: absolute;
+        opacity: 0; /* hide default radio */
+        cursor: pointer;
+    }
+
+    .radio-circle {
+        width: 18px; /* outer circle diameter */
+        height: 18px;
+        border: 2px solid rgb(0, 70, 140); /* outer circle color */
+        border-radius: 50%;
+        margin-right: 6px;
+        position: relative;
+        display: inline-block;
+    }
+
+    /* inner circle when checked */
+    .custom-radio input:checked + .radio-circle::after {
+        content: "";
+        width: 13px; /* inner circle diameter */
+        height: 13px;
+        background: rgb(0, 70, 140); /* inner circle color */
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    /* === CUSTOM GRADIENT BUTTON === */
+.gradient-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: midnightblue;
+    cursor: pointer;
+
+    border: 2px solid rgb(0,70,140);
+    border-radius: 6px;
+
+    /* === RECTANGULAR EMERALD CORE (WHITE CENTER) === */
+      background:
+       
+        /* horizontal rectangle */
+        linear-gradient(to right,
+            rgb(0,70,140) 0%,
+            rgb(0,70,140) 30%,
+            white 40%,
+            white 60%,
+            rgb(0,70,140) 70%,
+            rgb(0,70,140) 100%
+        );
+
+    background-blend-mode: lighten;
+ 
+}
+
+    
+</style>
 </head>
 
 <body>
 
-<div class="panel">
+    <!-- LOGIN PANEL -->
+<div class="panel" id="loginPanel">
+    <h3 style="text-align:center">Login</h3>
+
+    <div class="row">
+        <label>User:</label>
+        <input type="text" id="loginUser">
+    </div>
+
+    <div class="row">
+        <label>Password:</label>
+        <input type="password" id="loginPass">
+    </div>
+
+     <button class="gradient-button" onclick="login()">Login</button>
+</div>
+
+<!-- KEY GENERATOR PANEL (HIDDEN UNTIL LOGIN) -->
+<div class="panel" id="appPanel" style="display:none">
 
     <!-- MODE RADIO BUTTONS -->
     <div class="radio-group">
-        <label>
+        <label class="custom-radio">
             <input type="radio" name="mode" id="RbSawing" checked>
+            <span class="radio-circle"></span>
             Sawing
         </label>
 
-        <label>
+        <label class="custom-radio">
             <input type="radio" name="mode" id="RbShape">
+            <span class="radio-circle"></span>
             Shape
         </label>
 
-        <label>
+        <label class="custom-radio">
             <input type="radio" name="mode" id="RbMulti">
+            <span class="radio-circle"></span>
             Multi
         </label>
 
-        <label>
+        <label class="custom-radio">
             <input type="radio" name="mode" id="Rb4P">
+            <span class="radio-circle"></span>
             4P
         </label>
     </div>
@@ -116,13 +198,30 @@
     </div>
 
     <!-- GENERATE BUTTON -->
-    <button id="BtnKeyGen" onclick="generateKey()">
+      <button class="gradient-button" id="BtnKeyGen" onclick="generateKey()">
         Key Generate
     </button>
 
 </div>
 
 <script>
+    /* ===== LOGIN LOGIC ===== */
+const USERNAME = "utpladmin";   // set your username
+const PASSWORD = "ut2025";    // set your password
+
+function login() {
+    const u = document.getElementById("loginUser").value.trim();
+    const p = document.getElementById("loginPass").value.trim();
+
+    if (u === USERNAME && p === PASSWORD) {
+        document.getElementById("loginPanel").style.display = "none";
+        document.getElementById("appPanel").style.display = "block";
+    } else {
+        alert("Invalid username or password");
+    }
+}
+
+/* ===== KEY GENERATOR LOGIC ===== */
 function generateKey() {
 
     const machineIdFull = document.getElementById("TxtMachinID").value.trim();
@@ -136,10 +235,10 @@ function generateKey() {
     // MODE
     let modeCode = "X";
 
-    if (RbSawing.checked) modeCode = "S";
-    else if (RbShape.checked) modeCode = "H";
-    else if (RbMulti.checked) modeCode = "M";
-    else if (Rb4P.checked) modeCode = "P";
+     if (document.getElementById("RbSawing").checked) modeCode = "S";
+    else if (document.getElementById("RbShape").checked) modeCode = "H";
+    else if (document.getElementById("RbMulti").checked) modeCode = "M";
+    else if (document.getElementById("Rb4P").checked) modeCode = "P";
 
     // SAME slicing as C#
     const thirdDigit = machineIdFull.substring(2, 3);
