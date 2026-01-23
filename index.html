@@ -206,14 +206,19 @@
 
 <script>
     /* ===== LOGIN LOGIC ===== */
-const USERNAME = "utpladmin";   // set your username
-const PASSWORD = "ut2025";    // set your password
+const USERNAME = "utpladmin";
+const PASSWORD = "ut2025";
 
 function login() {
     const u = document.getElementById("loginUser").value.trim();
     const p = document.getElementById("loginPass").value.trim();
 
     if (u === USERNAME && p === PASSWORD) {
+
+        // save login in browser
+        localStorage.setItem("savedUser", u);
+        localStorage.setItem("savedPass", p);
+
         document.getElementById("loginPanel").style.display = "none";
         document.getElementById("appPanel").style.display = "block";
     } else {
@@ -282,6 +287,15 @@ function base32Encode(bytes) {
 
     return result;
 }
+window.onload = function () {
+    const savedUser = localStorage.getItem("savedUser");
+    const savedPass = localStorage.getItem("savedPass");
+
+    if (savedUser && savedPass) {
+        document.getElementById("loginUser").value = savedUser;
+        document.getElementById("loginPass").value = savedPass;
+    }
+};
 </script>
 
 </body>
