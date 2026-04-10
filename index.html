@@ -177,6 +177,11 @@
             <span class="radio-circle"></span>
             4P
         </label>
+          <label class="custom-radio">
+            <input type="radio" name="mode" id="Rb4PFacet">
+            <span class="radio-circle"></span>
+            4P Facet
+        </label>
     </div>
 
     <!-- MACHINE ID -->
@@ -287,6 +292,7 @@ function base32Encode(bytes) {
 
     return result;
 }
+
 window.onload = function () {
     const savedUser = localStorage.getItem("savedUser");
     const savedPass = localStorage.getItem("savedPass");
