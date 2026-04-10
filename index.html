@@ -20,7 +20,9 @@
         border-radius: 6px;
         box-shadow: 0 0 10px rgba(0,0,0,0.15);
     }
-
+    .panel-large {
+    max-width: 650px;   /* increase size only for second panel */
+    }   
   
 
     .row {
@@ -54,14 +56,16 @@
       /* === CUSTOM RADIO BUTTONS === */
     .radio-group {
         display: flex;
-        gap: 15px;
+        flex-wrap: nowrap;        /* FORCE single line */
+        gap: 10px;                /* small gap */
         margin-bottom: 25px;
-        flex-wrap: wrap; /* in case screen is small */
     }
 
     .custom-radio {
         display: flex;
         align-items: center;
+        white-space: nowrap;   /* prevent text break like "4P Fancy" */
+        font-size: 14px;       /* slightly smaller to fit */
         cursor: pointer;
         position: relative;
         font-weight: normal;
@@ -78,7 +82,7 @@
         width: 18px; /* outer circle diameter */
         height: 18px;
         border: 2px solid rgb(0, 70, 140); /* outer circle color */
-        border-radius: 50%;
+        border-radius: 50%;     
         margin-right: 6px;
         position: relative;
         display: inline-block;
@@ -150,7 +154,7 @@
 </div>
 
 <!-- KEY GENERATOR PANEL (HIDDEN UNTIL LOGIN) -->
-<div class="panel" id="appPanel" style="display:none">
+<div class="panel panel-large" id="appPanel" style="display:none">
 
     <!-- MODE RADIO BUTTONS -->
     <div class="radio-group">
@@ -177,10 +181,15 @@
             <span class="radio-circle"></span>
             4P
         </label>
-          <label class="custom-radio">
+       <label class="custom-radio">
             <input type="radio" name="mode" id="Rb4PFacet">
             <span class="radio-circle"></span>
             4P Facet
+        </label>
+        <label class="custom-radio">
+            <input type="radio" name="mode" id="Rb4PFancy">
+            <span class="radio-circle"></span>
+            4P Fancy
         </label>
     </div>
 
@@ -205,7 +214,7 @@
     <!-- GENERATE BUTTON -->
       <button class="gradient-button" id="BtnKeyGen" onclick="generateKey()">
         Key Generate
-    </button>
+    </button>   
 
 </div>
 
