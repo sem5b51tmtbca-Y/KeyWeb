@@ -102,8 +102,16 @@
     }
     
     /* === CUSTOM GRADIENT BUTTON === */
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+
 .gradient-button {
-    width: 100%;
+    width: 100%;   /* full width by default */
     padding: 10px;
     font-size: 16px;
     font-weight: bold;
@@ -113,22 +121,20 @@
     border: 2px solid rgb(0,70,140);
     border-radius: 6px;
 
-    /* === RECTANGULAR EMERALD CORE (WHITE CENTER) === */
-      background:
-       
-        /* horizontal rectangle */
-        linear-gradient(to right,
-            rgb(0,70,140) 0%,
-            rgb(0,70,140) 30%,
-            white 40%,
-            white 60%,
-            rgb(0,70,140) 70%,
-            rgb(0,70,140) 100%
-        );
-
-    background-blend-mode: lighten;
- 
+    background: linear-gradient(
+        to right,
+        rgb(0,70,140) 0%,
+        rgb(0,70,140) 30%,
+        white 40%,
+        white 60%,
+        rgb(0,70,140) 70%,
+        rgb(0,70,140) 100%
+    );
 }
+.button-row .gradient-button {
+    width: 160px;
+}
+
 
     
 </style>
@@ -211,10 +217,17 @@
         <input type="text" id="TxtKey">
     </div>
 
-    <!-- GENERATE BUTTON -->
-      <button class="gradient-button" id="BtnKeyGen" onclick="generateKey()">
+  <div class="button-row">
+
+    <button class="gradient-button" id="BtnKeyGen" onclick="generateKey()">
         Key Generate
-    </button>   
+    </button>
+
+    <button class="gradient-button" id="BtnKeyClear" onclick="clearFields()">
+        Clear
+    </button>
+ 
+   </div>
 
 </div>
 
@@ -250,6 +263,7 @@ function generateKey() {
         alert("Please enter Machine ID and Days");
         return;
     }
+    
 
     // MODE
     let modeCode = "X";
@@ -275,7 +289,10 @@ function generateKey() {
 
     document.getElementById("TxtKey").value = encoded;
 }
-
+function clearFields() {
+    document.getElementById("TxtMachinID").value = "";
+    document.getElementById("TxtKey").value = "";
+}
 /* ===== BASE32 (SAME AS C#) ===== */
 function base32Encode(bytes) {
     const base32Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
